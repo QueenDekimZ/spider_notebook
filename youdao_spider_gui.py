@@ -21,15 +21,15 @@ Form_Data['action']='FY_BY_REALTIME'
 
 def request_translate(event):
     try:
-        content = path_text.GetValue()
-        Form_Data['i']=str(content)
-        data = parse.urlencode(Form_Data).encode('utf-8')
-        response = request.urlopen(url, data)
-        html = response.read().decode('utf-8')
-        translate_results = json.loads(html)
-        temp = str(translate_results['translateResult'][0][0]['tgt'])
+        content = path_text.GetValue()   # 获取翻译原文框内容
+        Form_Data['i']=str(content)   # 转换成字符串读入Headers
+        data = parse.urlencode(Form_Data).encode('utf-8')# 使用urlencode方法转换标准格式
+        response = request.urlopen(url, data)  # 传递Request对象和转换完格式的数据
+        html = response.read().decode('utf-8')  # 读取信息并解码
+        translate_results = json.loads(html) # 使用JSON
+        temp = str(translate_results['translateResult'][0][0]['tgt']) # 读取翻译结果
         #with open(temp,'r',encoding='utf-8') as f:
-        content_trans.SetValue(temp)
+        content_trans.SetValue(temp)  # 在翻译框输出翻译结果
     except:
         dlg = wx.MessageDialog(frame,"输入内容为空，请重新输入。","提示",wx.OK) #语法是(self, 内容, 标题, ID)
         dlg.ShowModal() #显示对话框
@@ -39,8 +39,8 @@ def request_translate(event):
 
 def text_clear(event):
     if path_text.GetValue():
-        path_text.Clear()
-        content_trans.Clear()
+        path_text.Clear()   # 清空翻译原文
+        content_trans.Clear()   # 清空翻译结果
     else:
         dlg = wx.MessageDialog(frame,"显示内容为空。","提示",wx.OK)
         dlg.ShowModal() 
@@ -55,8 +55,8 @@ tran_button = wx.Button(frame,label = "翻译",pos = (300,10),size = (85,170))
 clear_button = wx.Button(frame,label = "清空",pos = (300,185),size = (85,170))
 content_trans= wx.TextCtrl(frame,pos = (390,5),size = (290,355),style = wx.TE_MULTILINE)
 
-tran_button.Bind(wx.EVT_BUTTON,request_translate)
-clear_button.Bind(wx.EVT_BUTTON,text_clear)
+tran_button.Bind(wx.EVT_BUTTON,request_translate)  # 翻译按钮事件
+clear_button.Bind(wx.EVT_BUTTON,text_clear)  # 清空按钮事件
 
 frame.Show()
 app.MainLoop()
