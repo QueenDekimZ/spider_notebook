@@ -38,7 +38,7 @@ def request_translate(event):
     #print("翻译结果：",translate_results['translateResult'][0][0]['tgt'])
 
 def text_clear(event):
-    if path_text.GetValue():
+    if path_text.GetValue() or content_trans.GetValue():
         path_text.Clear()   # 清空翻译原文
         content_trans.Clear()   # 清空翻译结果
     else:
